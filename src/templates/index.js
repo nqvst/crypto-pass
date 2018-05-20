@@ -41,10 +41,13 @@ if(!config.exists()) {
 const copyPassButton = document.querySelector('#copyPassButton');
 
 copyPassButton.addEventListener('click', (e) => {
+    e.preventDefault();
     console.log('i was clicked')
     const domain = document.querySelector('#domain').value
-    const pw = passwords.getPassword('test pass', domain);
+    const inputPassword = document.querySelector('#password').value
+    const pw = passwords.getPassword(inputPassword, domain);
     clipboard.writeText(pw);
+    const alertMessage = document.querySelector('#alert').classList.toggle('hidden')
 });
 
 ipc.on('reload-main', () => {
