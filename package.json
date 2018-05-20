@@ -1,0 +1,22 @@
+{
+  "name": "hidden.app",
+  "version": "0.0.1",
+  "description": "genearate pairs of identical data on different machines with no networking",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "crypto-js": "^3.1.9-1",
+    "node-fs": "^0.1.7",
+    "secure-random": "^1.1.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "electron": "^2.0.1",
+    "electron-packager": "^12.1.0"
+  }
+}
