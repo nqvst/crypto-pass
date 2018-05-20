@@ -2,9 +2,11 @@ const {
     app,
     BrowserWindow,
     Menu,
+    ipcMain: ipc,
 } = require('electron');
 const path = require('path');
 const url = require('url');
+const config = require('./util/config');
 
 const mainMenuTemplate = require('./menu/mainMenu.js');
 
@@ -16,6 +18,7 @@ function createMainMenu() {
 }
 
 function createWindow() {
+
     win = new BrowserWindow({ width: 800, height: 600, frame: false });
 
     win.loadURL(url.format({
@@ -24,7 +27,7 @@ function createWindow() {
         slashes: true,
     }));
 
-    win.webContents.openDevTools();
+    // win.webContents.openDevTools();
 
     win.on('closed', () => {
         win = null;
@@ -46,3 +49,8 @@ app.on('activate', () => {
         createWindow();
     }
 });
+
+ipc.on('setup-done', () => {
+    console.log('setup-done in main.js')
+    win.webContents.send('reload-main');
+})

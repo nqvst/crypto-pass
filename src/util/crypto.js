@@ -30,7 +30,7 @@ function generatePassword({ privateKey, password, domain, version = 1 }) {
                     .digest('hex');
 }
 
-function getPassword(password, domain, version) {
+function getPassword(password, domain, version = 1) {
     if(!config.exists()) {
         console.log('no seed file found, create one by pressing setup.')
         return;
@@ -62,6 +62,7 @@ function setupNewSecretKey(password, recoverySeed) {
     const encryptedKey = encrypt(password, prKey);
     console.log('the secret key: [', prKey, '] encrypted: ', encryptedKey);
     config.save(encryptedKey);
+    return seed;
 }
 
 function getPrivateKeyFromFile(password) {
@@ -90,6 +91,8 @@ module.exports = {
     createSeed,
     generatePrivateKey,
     generatePassword,
+    getPassword,
+    setupNewSecretKey,
 }
 
 // tests =================================================================================
