@@ -2,7 +2,7 @@
   "name": "hidden.app",
   "version": "0.0.1",
   "description": "genearate pairs of identical data on different machines with no networking",
-  "main": "main.js",
+  "main": "src/main.js",
   "scripts": {
     "start": "electron ."
   },

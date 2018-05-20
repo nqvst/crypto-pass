@@ -24,4 +24,5 @@ function exists() {
 moduel.exports = {
     get,
     save,
-}
+    exists,
+};
