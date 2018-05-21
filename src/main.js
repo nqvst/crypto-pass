@@ -3,6 +3,7 @@ const {
     BrowserWindow,
     Menu,
     ipcMain: ipc,
+    globalShortcut,
 } = require('electron');
 const path = require('path');
 const url = require('url');
@@ -19,7 +20,7 @@ function createMainMenu() {
 
 function createWindow() {
 
-    win = new BrowserWindow({ width: 800, height: 600, frame: false });
+    win = new BrowserWindow({ width: 800, height: 200, frame: false });
 
     win.loadURL(url.format({
         pathname: path.join(__dirname, 'templates/index.html'),
@@ -29,26 +30,36 @@ function createWindow() {
 
     // win.webContents.openDevTools();
 
-    win.on('closed', () => {
+    win.on('close', (e) => {
         win = null;
+        // e.preventDefault();
+        // win.hide();
+      });
+
+    const ret = globalShortcut.register('Control+Command+P', () => {
+        win.show();
     });
+
+    if (!ret) {
+        console.log('registration failed')
+    }
+
+    console.log(globalShortcut.isRegistered('Control+Command+P'));
 
     createMainMenu();
 }
 
 app.on('ready', createWindow);
 
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit();
-    }
-});
-
 app.on('activate', () => {
     if (win === null) {
         createWindow();
     }
 });
+
+app.on('will-quit', () => {
+    globalShortcut.unregisterAll();
+})
 
 ipc.on('setup-done', () => {
     console.log('setup-done in main.js')

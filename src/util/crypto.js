@@ -22,10 +22,9 @@ function createSeed() {
     return randomWords.join(' ');
 }
 
-function generatePassword({ privateKey, password, domain, version = 1 }) {
+function generatePassword({ privateKey, domain, version = 1 }) {
     return crypto.createHmac('sha256', privateKey)
                     .update(domain)
-                    .update(password)
                     .update(version.toString())
                     .digest('hex');
 }
@@ -36,21 +35,19 @@ function getPassword(password, domain, version = 1) {
         return;
     }
 
-    const privateKey = config.get();
+    const privateKey = getPrivateKeyFromFile(password);
     console.log('privateKey found: ', privateKey);
     if (privateKey) {
-        const pass = generatePassword({
-            password,
+        return generatePassword({
             domain,
             version,
             privateKey,
         });
-        return pass;
     }
 }
 
-function generatePrivateKey(password, seed) {
-    return crypto.createHmac('sha256', password)
+function generatePrivateKey(seed) {
+    return crypto.createHmac('sha256', '')
                     .update(seed)
                     .digest('hex');
 }
@@ -58,9 +55,9 @@ function generatePrivateKey(password, seed) {
 function setupNewSecretKey(password, recoverySeed) {
     const seed = recoverySeed || createSeed();
     console.log('the secret words: ', seed);
-    const prKey = generatePrivateKey(password, seed);
-    const encryptedKey = encrypt(password, prKey);
-    console.log('the secret key: [', prKey, '] encrypted: ', encryptedKey);
+    const privateKey = generatePrivateKey(seed);
+    const encryptedKey = encrypt(password, privateKey);
+    console.log('the secret key: [', privateKey, '] encrypted: ', encryptedKey);
     config.save(encryptedKey);
     return seed;
 }

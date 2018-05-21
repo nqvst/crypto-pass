@@ -16,12 +16,23 @@
 
             <p>Choose a password to get generate your private key</p>
             <form>
+                <div id="recoveryContainer" class="form-group hidden">
+                    <textarea class="form-control" id="recoveryInput" rows="3" placeholder="Enter your seed words here..."></textarea>
+                </div>
+
                 <div class="form-group">
                     <input class="form-control" type="password" id="pass1" placeholder="password">
                 </div>
+
                 <div class="form-group">
                     <input class="form-control" type="password" id="pass2" placeholder="confirm password">
                 </div>
+
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="recover">
+                    <label class="form-check-label" for="exampleCheck1">Recover</label>
+                </div>
+
                 <button id="setupBtn" type="submit" class="btn btn-primary">Generate Secret Key</button>
             </form>
         </div>

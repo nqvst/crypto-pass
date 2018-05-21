@@ -1,6 +1,18 @@
 const { app, shell } = require('electron');
 
 const template = [
+    {},
+    {
+        label: 'File',
+        submenu: [
+            {
+                label: 'Recover from seed',
+                click() {
+
+                }
+            }
+        ]
+    },
     {
         label: 'Edit this!!',
         submenu: [
@@ -40,7 +52,7 @@ const template = [
         role: 'help',
         submenu: [
             {
-                label: 'Learn More',
+                label: 'How it works',
                 click() {
                     shell.openExternal('https://hidden.app')
                 }
