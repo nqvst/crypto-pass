@@ -10,14 +10,50 @@ const url = require('url');
 const passwords = require('../util/crypto');
 const config = require('../util/config');
 
-const setupContainer = document.querySelector('#setupContainer')
-const mainContainer = document.querySelector('#mainContainer')
+const setupContainer = document.querySelector('#setupContainer');
+const mainContainer = document.querySelector('#mainContainer');
+const unlockContainer = document.querySelector('#unlockContainer');
+
+
+const copyPassButton = document.querySelector('#copyPassButton');
+const unlockButton = document.querySelector('#unlockButton');
+const lockButton = document.querySelector('#lockButton');
+
 let win;
 
+lockButton.addEventListener('click', () => {
+    lock();
+});
+
+const getStoredPassword = () => {
+    return localStorage.getItem('password');
+};
+
+const setPassword = (pw) => {
+    localStorage.setItem('password', pw);
+};
+
+const lock = () => {
+    localStorage.clear();
+    hide(mainContainer);
+    show(unlockContainer);
+};
+
+function show(containerId) {
+    containerId.classList.remove('hidden');
+}
+
+function hide(containerId) {
+    containerId.classList.add('hidden');
+}
+
+
 if(!config.exists()) {
+    show(setupContainer);
+
     const openSetupButton = document.querySelector('#setupButton');
 
-    openSetupButton.addEventListener('click', () => {
+    openSetupButton.addEventListener('click', e => {
         const setupPath = url.format({
             pathname: path.join(__dirname, 'welcome.html'),
             protocol: 'file:',
@@ -38,25 +74,39 @@ if(!config.exists()) {
         win.loadURL(setupPath);
         win.show();
     });
+} else if(!getStoredPassword()){
+    show(unlockContainer);
+    hide(setupContainer);
 } else {
-    mainContainer.classList.toggle('hidden');
-    setupContainer.classList.toggle('hidden');
+    show(mainContainer);
+    hide(setupContainer);
 }
 
-const copyPassButton = document.querySelector('#copyPassButton');
-
-copyPassButton.addEventListener('click', (e) => {
+unlockButton.addEventListener('click', e => {
     e.preventDefault();
 
-    const password = localStorage.getItem('password') || 'jaenq002';
-    const domain = document.querySelector('#domain').value
-    const pw = passwords.getPassword(password, domain);
+    const passwordInput = document.querySelector('#password');
+
+    setPassword(passwordInput.value);
+
+    passwordInput.value = '';
+    hide(unlockContainer);
+    show(mainContainer);
+});
+
+copyPassButton.addEventListener('click', e => {
+    e.preventDefault();
+
+    const domain = document.querySelector('#domain');
+    console.log(getStoredPassword(), localStorage);
+
+    const pw = passwords.getPassword(getStoredPassword(), domain.value);
     clipboard.writeText(pw);
+    domain.value = '';
 
 
     const alertMessage = document.querySelector('#alert')
     alertMessage.classList.remove('hidden');
-
 
     setTimeout(() => {
         alertMessage.classList.add('fadeOut');

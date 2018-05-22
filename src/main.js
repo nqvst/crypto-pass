@@ -4,6 +4,7 @@ const {
     Menu,
     ipcMain: ipc,
     globalShortcut,
+    remote,
 } = require('electron');
 const path = require('path');
 const url = require('url');
@@ -28,7 +29,7 @@ function createWindow() {
         slashes: true,
     }));
 
-    // win.webContents.openDevTools();
+    win.webContents.openDevTools();
 
     win.on('close', (e) => {
         win = null;
@@ -46,7 +47,7 @@ function createWindow() {
 
     console.log(globalShortcut.isRegistered('Control+Command+P'));
 
-    createMainMenu();
+    // createMainMenu();
 }
 
 app.on('ready', createWindow);

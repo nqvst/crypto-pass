@@ -4,7 +4,10 @@
   "description": "genearate pairs of identical data on different machines with no networking",
   "main": "src/main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --prune=true --out=release-builds",
+    "package-win": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=win32 --arch=ia32 --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE",
+    "package-linux": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=linux --arch=x64 --prune=true --out=release-builds"
   },
   "keywords": [],
   "author": "",
@@ -17,8 +20,8 @@
     "secure-random": "^1.1.1"
   },
   "devDependencies": {
-    "eslint": "^4.19.1",
     "electron": "^2.0.1",
-    "electron-packager": "^12.1.0"
+    "electron-packager": "^12.1.0",
+    "eslint": "^4.19.1"
   }
 }

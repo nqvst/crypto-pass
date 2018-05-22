@@ -2,7 +2,7 @@ body {
     font-family: Menlo, monospace;
     background-color: #222;
     color: rgb(175, 175, 175);
-    border-top: rgb(194, 9, 201) 4px solid;
+    border-top: rgb(194, 9, 201) 8px solid;
     margin: 0;
     padding: 20px;
     display: flex;
@@ -29,3 +29,9 @@ body {
     transition: visibility 0s 1s, opacity 1s linear;
 }
 
+.lock-status {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 16px;
+}
