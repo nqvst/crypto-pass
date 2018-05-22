@@ -1,7 +1,6 @@
 const { app, shell } = require('electron');
 
 const template = [
-    {},
     {
         label: 'File',
         submenu: [
