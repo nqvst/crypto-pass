@@ -17,10 +17,17 @@ body {
 }
 
 .alert {
-    position: absolute;
-    top: 10px;
+
     opacity: 1;
+}
+
+.floating {
+    position: absolute;
+    top: 14px;
     font-size: 12px;
+    padding: 10px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .fadeOut {
