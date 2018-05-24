@@ -8,7 +8,7 @@ const {
 const { BrowserWindow } = remote;
 const path = require('path');
 const url = require('url');
-const { getPassword, hashLocalPass, compareLocalPass } = require('../util/crypto');
+const { getPassword } = require('../util/crypto');
 const config = require('../util/config');
 
 const setupContainer = document.querySelector('#setupContainer');
@@ -22,20 +22,22 @@ const lockButton = document.querySelector('#lockButton');
 
 let win;
 
+let localPass = '';
+
 lockButton.addEventListener('click', () => {
     lock();
 });
 
 const getStoredPassword = () => {
-    return sessionStorage.getItem('password');
+    return localPass;
 };
 
 const setPassword = (pw) => {
-    sessionStorage.setItem('password', pw);
+    localPass = pw;
 };
 
 const lock = () => {
-    sessionStorage.clear();
+    localPass = '';
     hide(mainContainer);
     show(unlockContainer);
     document.querySelector('#password').focus();
@@ -104,7 +106,6 @@ copyPassButton.addEventListener('click', e => {
     const pw = getPassword(getStoredPassword(), domain.value);
     clipboard.writeText(pw);
     domain.value = '';
-
 
     const alertMessage = document.querySelector('#alert')
     alertMessage.classList.remove('hidden');
