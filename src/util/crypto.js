@@ -17,9 +17,10 @@ function createSeed(entropy = '') {
 
     console.log('entropy hash', entropyHash, 'as a hex: ', largeNumberFromEntropy);
 
-    while (randomWords.length < 15) {
-        const randomBytes = crypto.randomBytes(3);
-        const r = parseInt(randomBytes.toString('hex'), 16) * largeNumberFromEntropy;
+    while (randomWords.length < 20) {
+        const randomBytes = crypto.randomBytes(4);
+        const r = largeNumberFromEntropy % parseInt(randomBytes.toString('hex'), 16);
+        console.log(r)
         const word = words[r % WORD_LIST_LENGTH];
 
         if (word) {
