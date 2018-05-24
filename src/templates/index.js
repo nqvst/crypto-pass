@@ -8,7 +8,7 @@ const {
 const { BrowserWindow } = remote;
 const path = require('path');
 const url = require('url');
-const passwords = require('../util/crypto');
+const { getPassword, hashLocalPass, compareLocalPass } = require('../util/crypto');
 const config = require('../util/config');
 
 const setupContainer = document.querySelector('#setupContainer');
@@ -38,6 +38,7 @@ const lock = () => {
     sessionStorage.clear();
     hide(mainContainer);
     show(unlockContainer);
+    document.querySelector('#password').focus();
 };
 
 function show(containerId) {
@@ -47,7 +48,6 @@ function show(containerId) {
 function hide(containerId) {
     containerId.classList.add('hidden');
 }
-debugger;
 
 if(!config.exists()) {
     show(setupContainer);
@@ -87,12 +87,12 @@ unlockButton.addEventListener('click', e => {
     e.preventDefault();
 
     const passwordInput = document.querySelector('#password');
-
     setPassword(passwordInput.value);
 
     passwordInput.value = '';
     hide(unlockContainer);
     show(mainContainer);
+    document.querySelector('#domain').focus();
 });
 
 copyPassButton.addEventListener('click', e => {
@@ -101,7 +101,7 @@ copyPassButton.addEventListener('click', e => {
     const domain = document.querySelector('#domain');
     console.log(getStoredPassword(), sessionStorage);
 
-    const pw = passwords.getPassword(getStoredPassword(), domain.value);
+    const pw = getPassword(getStoredPassword(), domain.value);
     clipboard.writeText(pw);
     domain.value = '';
 
@@ -115,7 +115,7 @@ copyPassButton.addEventListener('click', e => {
             alertMessage.classList.remove('fadeOut');
             alertMessage.classList.add('hidden');
         }, 1000);
-    }, 1000);
+    }, 3000);
 });
 
 ipc.on('reload-main', () => {
@@ -123,5 +123,3 @@ ipc.on('reload-main', () => {
     mainContainer.classList.toggle('hidden');
     setupContainer.classList.toggle('hidden');
 });
-
-// sessionStorage.setItem('lol', 'fakk2');

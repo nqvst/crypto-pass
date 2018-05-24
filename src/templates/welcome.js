@@ -17,18 +17,29 @@ const recoveryInput = document.querySelector('#recoveryInput');
 
 const MIN_PASSWORD_LENGTH = 8;
 
+const entropy = [];
+
 const validPassword = (pw1, pw2) => (
     pw1 === pw2 && pw1.length >= MIN_PASSWORD_LENGTH
 );
+
+window.addEventListener('mousemove', (e) => {
+    if (entropy.length >= 10000) {
+        return
+    }
+    const { screenY, screenX } = e;
+    console.log(e);
+    entropy.push(screenY * screenX);
+});
 
 function setup(password) {
     const recoverySeed = document.querySelector('#recoveryInput').value;
 
     let seed;
     if (showRecovery && recoverySeed) {
-        seed = core.setupNewSecretKey(password, recoverySeed);
+        seed = core.setupNewSecretKey({ password, recoverySeed });
     } else {
-        seed = core.setupNewSecretKey(password);
+        seed = core.setupNewSecretKey({ password, entropy });
     }
 
     if(seed) {

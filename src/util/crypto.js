@@ -3,15 +3,23 @@ const words = require('./words.js');
 const WORD_LIST_LENGTH = words.length;
 const config = require('./config.js');
 const aes256 = require('aes256');
+const bcrypt = require('bcrypt');
+
+
 
 // this is pretty cool: parseInt(Buffer.from('password').toString('hex'), 16) % 654321;
 
-function createSeed() {
+function createSeed(entropy = '') {
+
     let randomWords = [];
+    const entropyHash = sha256(entropy.join(''));
+    const largeNumberFromEntropy = parseInt(entropyHash, 16);
+
+    console.log('entropy hash', entropyHash, 'as a hex: ', largeNumberFromEntropy);
 
     while (randomWords.length < 15) {
         const randomBytes = crypto.randomBytes(3);
-        const r = parseInt(randomBytes.toString('hex'), 16)
+        const r = parseInt(randomBytes.toString('hex'), 16) * largeNumberFromEntropy;
         const word = words[r % WORD_LIST_LENGTH];
 
         if (word) {
@@ -46,14 +54,30 @@ function getPassword(password, domain, version = 1) {
     }
 }
 
+function hashLocalPass(pass) {
+    const hash = bcrypt.hashSync(pass, 10);
+    console.log('bcrypt hash of pw', hash);
+    return hash;
+}
+
+function compareLocalPass(pass, hash) {
+    return bcrypt.compareSync(pass, hash);
+}
+
 function generatePrivateKey(seed) {
     return crypto.createHmac('sha256', '')
                     .update(seed)
                     .digest('hex');
 }
 
-function setupNewSecretKey(password, recoverySeed) {
-    const seed = recoverySeed || createSeed();
+function sha256(input, key = '') {
+    return crypto.createHmac('sha256', key)
+                    .update(input)
+                    .digest('hex');
+}
+
+function setupNewSecretKey({password, recoverySeed, entropy}) {
+    const seed = recoverySeed || createSeed(entropy);
     console.log('the secret words: ', seed);
     const privateKey = generatePrivateKey(seed);
     const encryptedKey = encrypt(password, privateKey);
@@ -90,6 +114,8 @@ module.exports = {
     generatePassword,
     getPassword,
     setupNewSecretKey,
+    hashLocalPass,
+    compareLocalPass,
 }
 
 // tests =================================================================================
