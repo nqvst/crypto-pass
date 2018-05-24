@@ -22,12 +22,12 @@
                     <input autofocus class="form-control" id="password" placeholder="enter your password..." type="password">
                 </div>
 
-                <button type="submit" class="btn btn-default mb-2" id="unlockButton">
+                <button type="submit" class="btn btn-default mb-2 hidden" id="unlockButton">
                     open <i class="fas fa-lock-open"></i>
                 </button>
             </form>
         </div>
-        <div id="mainContainer" class="hidden" >
+        <div id="mainContainer" class=" hidden" >
             <div class="lock-status">
                 <h3 id="lockButton"><span class="badge badge-success">
                     <i class="fas fa-lock"></i>
@@ -42,10 +42,10 @@
             <form class="form-inline">
                 <div class="form-group mx-sm-3 mb-2">
                     <label for="domain" class="sr-only">Domain</label>
-                    <input autofocus class="form-control" id="domain" placeholder="e.g google.com..." type="text">
+                    <input class="form-control" id="domain" placeholder="e.g google.com..." type="text">
                 </div>
 
-                <button type="submit" class="btn btn-primary mb-2" id="copyPassButton">
+                <button type="submit" class="btn btn-primary mb-2 hidden" id="copyPassButton">
                     <i class="far fa-copy"></i>
                 </button>
             </form>

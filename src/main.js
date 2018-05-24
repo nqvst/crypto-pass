@@ -21,7 +21,7 @@ function createMainMenu() {
 
 function createWindow() {
 
-    win = new BrowserWindow({ width: 800, height: 200, frame: false });
+    win = new BrowserWindow({ width: 600, height: 100, frame: false });
 
     win.loadURL(url.format({
         pathname: path.join(__dirname, 'templates/index.html'),
