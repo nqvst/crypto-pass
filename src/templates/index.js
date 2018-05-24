@@ -4,6 +4,7 @@ const {
     remote,
     ipcRenderer: ipc,
 } = require('electron');
+
 const { BrowserWindow } = remote;
 const path = require('path');
 const url = require('url');
@@ -26,15 +27,15 @@ lockButton.addEventListener('click', () => {
 });
 
 const getStoredPassword = () => {
-    return localStorage.getItem('password');
+    return sessionStorage.getItem('password');
 };
 
 const setPassword = (pw) => {
-    localStorage.setItem('password', pw);
+    sessionStorage.setItem('password', pw);
 };
 
 const lock = () => {
-    localStorage.clear();
+    sessionStorage.clear();
     hide(mainContainer);
     show(unlockContainer);
 };
@@ -46,7 +47,7 @@ function show(containerId) {
 function hide(containerId) {
     containerId.classList.add('hidden');
 }
-
+debugger;
 
 if(!config.exists()) {
     show(setupContainer);
@@ -98,7 +99,7 @@ copyPassButton.addEventListener('click', e => {
     e.preventDefault();
 
     const domain = document.querySelector('#domain');
-    console.log(getStoredPassword(), localStorage);
+    console.log(getStoredPassword(), sessionStorage);
 
     const pw = passwords.getPassword(getStoredPassword(), domain.value);
     clipboard.writeText(pw);
@@ -122,3 +123,5 @@ ipc.on('reload-main', () => {
     mainContainer.classList.toggle('hidden');
     setupContainer.classList.toggle('hidden');
 });
+
+// sessionStorage.setItem('lol', 'fakk2');
