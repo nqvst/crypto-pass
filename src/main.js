@@ -32,13 +32,15 @@ function createWindow() {
     win.webContents.openDevTools();
 
     win.on('close', (e) => {
+
         win = null;
+
         // e.preventDefault();
         // win.hide();
       });
 
     const ret = globalShortcut.register('Control+Command+P', () => {
-        win.show();
+        app.focus();
     });
 
     if (!ret) {
@@ -60,7 +62,7 @@ app.on('activate', () => {
 
 app.on('will-quit', () => {
     globalShortcut.unregisterAll();
-})
+});
 
 ipc.on('setup-done', () => {
     console.log('setup-done in main.js')
