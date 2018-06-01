@@ -23,14 +23,16 @@ const validPassword = (pw1, pw2) => (
     pw1 === pw2 && pw1.length >= MIN_PASSWORD_LENGTH
 );
 
-window.addEventListener('mousemove', (e) => {
+const mouseListener = (e) => {
     if (entropy.length >= 10000) {
         return
     }
     const { screenY, screenX } = e;
     console.log(e);
     entropy.push(screenY * screenX);
-});
+};
+
+window.addEventListener('mousemove', mouseListener);
 
 function setup(password) {
     const recoverySeed = document.querySelector('#recoveryInput').value;
@@ -72,6 +74,8 @@ recoverCheck.addEventListener('change', e => {
 
 setupBtn.addEventListener('click', (e) => {
     e.preventDefault();
+
+    window.removeEventListener('mousemove', mouseListener);
 
     const pw1 = document.querySelector('#pass1').value
     const pw2 = document.querySelector('#pass2').value

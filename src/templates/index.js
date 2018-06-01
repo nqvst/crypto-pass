@@ -8,7 +8,7 @@ const {
 const { BrowserWindow } = remote;
 const path = require('path');
 const url = require('url');
-const { getPassword } = require('../util/crypto');
+const { getPassword, sha256 } = require('../util/crypto');
 const config = require('../util/config');
 
 const setupContainer = document.querySelector('#setupContainer');
@@ -33,7 +33,7 @@ const getStoredPassword = () => {
 };
 
 const setPassword = (pw) => {
-    localPass = pw;
+    localPass = sha256(pw);
 };
 
 const lock = () => {
@@ -51,7 +51,7 @@ function hide(containerId) {
     containerId.classList.add('hidden');
 }
 
-if(!config.exists()) {
+if(!config.privateKeyExists()) {
     show(setupContainer);
 
     const openSetupButton = document.querySelector('#setupButton');

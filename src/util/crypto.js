@@ -3,28 +3,28 @@ const words = require('./words.js');
 const WORD_LIST_LENGTH = words.length;
 const config = require('./config.js');
 const aes256 = require('aes256');
-const bcrypt = require('bcrypt');
-
-
 
 // this is pretty cool: parseInt(Buffer.from('password').toString('hex'), 16) % 654321;
 
 function createSeed(entropy = '') {
-
     let randomWords = [];
-    const entropyHash = sha256(entropy.join(''));
-    const largeNumberFromEntropy = parseInt(entropyHash, 16);
-
-    console.log('entropy hash', entropyHash, 'as a hex: ', largeNumberFromEntropy);
 
     while (randomWords.length < 20) {
+        debugger;
         const randomBytes = crypto.randomBytes(4);
+        const secureRandom = parseInt(randomBytes.toString('hex'), 16);
+        const entropyHash = sha256(entropy[secureRandom % entropy.length].toString());
+        const largeNumberFromEntropy = parseInt(entropyHash, 16);
+
+        console.log('entropy hash', entropyHash, 'as a hex: ', largeNumberFromEntropy);
+
         const r = largeNumberFromEntropy % parseInt(randomBytes.toString('hex'), 16);
         console.log(r)
         const word = words[r % WORD_LIST_LENGTH];
 
         if (word) {
             randomWords.push(word);
+
         }
     }
 
@@ -39,7 +39,7 @@ function generatePassword({ privateKey, domain, version = 1 }) {
 }
 
 function getPassword(password, domain, version = 1) {
-    if(!config.exists()) {
+    if(!config.privateKeyExists()) {
         console.log('no seed file found, create one by pressing setup.')
         return;
     }
@@ -55,40 +55,32 @@ function getPassword(password, domain, version = 1) {
     }
 }
 
-function hashLocalPass(pass) {
-    const hash = bcrypt.hashSync(pass, 10);
-    console.log('bcrypt hash of pw', hash);
-    return hash;
-}
-
-function compareLocalPass(pass, hash) {
-    return bcrypt.compareSync(pass, hash);
-}
-
-function generatePrivateKey(seed) {
-    return crypto.createHmac('sha256', '')
-                    .update(seed)
-                    .digest('hex');
-}
-
-function sha256(input, key = '') {
+function sha256(input, key = '', format = 'hex') {
     return crypto.createHmac('sha256', key)
                     .update(input)
-                    .digest('hex');
+                    .digest(format);
 }
 
-function setupNewSecretKey({password, recoverySeed, entropy}) {
+function getHashedMasterPassword(password) {
+    return sha256(password);
+}
+
+function setupNewSecretKey({ password, recoverySeed, entropy }) {
     const seed = recoverySeed || createSeed(entropy);
-    console.log('the secret words: ', seed);
-    const privateKey = generatePrivateKey(seed);
-    const encryptedKey = encrypt(password, privateKey);
+    const privateKey = sha256(seed);
+    const hashedMaterPass = getHashedMasterPassword(password);
+
+    const encryptedKey = encrypt(hashedMaterPass, privateKey);
+
     console.log('the secret key: [', privateKey, '] encrypted: ', encryptedKey);
+
     config.save(encryptedKey);
+
     return seed;
 }
 
 function getPrivateKeyFromFile(password) {
-    if(config.exists()) {
+    if(config.privateKeyExists()) {
         return decrypt(password, config.get());
     }
 }
@@ -106,17 +98,18 @@ function decrypt(password, cipherText) {
 }
 
 function recoverFromSeed(password, seed) {
-    setupNewSecretKey(password, seed);
+    setupNewSecretKey({
+        password,
+        recoverySeed: seed
+    });
 }
 
 module.exports = {
     createSeed,
-    generatePrivateKey,
     generatePassword,
     getPassword,
     setupNewSecretKey,
-    hashLocalPass,
-    compareLocalPass,
+    sha256,
 }
 
 // tests =================================================================================
