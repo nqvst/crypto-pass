@@ -11,7 +11,7 @@ const config = require('../util/config');
 
 const setupBtn = document.querySelector('#setupBtn');
 const doneBtn = document.querySelector('#done');
-const recoverCheck = document.querySelector('#recover');
+const recoverCheckbox = document.querySelector('#recover');
 const recoveryContainer = document.querySelector('#recoveryContainer');
 const recoveryInput = document.querySelector('#recoveryInput');
 
@@ -23,7 +23,7 @@ const validPassword = (pw1, pw2) => (
     pw1 === pw2 && pw1.length >= MIN_PASSWORD_LENGTH
 );
 
-const mouseListener = (e) => {
+const mouseListener = e => {
     if (entropy.length >= 10000) {
         return
     }
@@ -32,21 +32,23 @@ const mouseListener = (e) => {
     entropy.push(screenY * screenX);
 };
 
+const getSeed = (recoverySeed, showRecovery) => (
+    (showRecovery && recoverySeed) ?
+        { password, recoverySeed } :
+        { password, entropy }
+);
+
 window.addEventListener('mousemove', mouseListener);
 
 function setup(password) {
     const recoverySeed = document.querySelector('#recoveryInput').value;
 
-    let seed;
-    if (showRecovery && recoverySeed) {
-        seed = core.setupNewSecretKey({ password, recoverySeed });
-    } else {
-        seed = core.setupNewSecretKey({ password, entropy });
-    }
+    const seed = getSeed(showRecovery, recoverySeed);
 
     if(seed) {
         if (seed === recoverySeed && showRecovery) {
             done();
+            return;
         }
 
         const seedOutputElement = document.querySelector('#seed');
@@ -61,7 +63,7 @@ function setup(password) {
 
 let showRecovery = false;
 
-recoverCheck.addEventListener('change', e => {
+recoverCheckbox.addEventListener('change', e => {
     const { target: { checked } = {}} = e;
 
     showRecovery = Boolean(checked);
@@ -72,7 +74,7 @@ recoverCheck.addEventListener('change', e => {
     }
 });
 
-setupBtn.addEventListener('click', (e) => {
+setupBtn.addEventListener('click', e => {
     e.preventDefault();
 
     window.removeEventListener('mousemove', mouseListener);
@@ -82,7 +84,7 @@ setupBtn.addEventListener('click', (e) => {
 
     if (validPassword(pw1, pw2)) {
 
-        if(config.exists()) {
+        if(config.privateKeyExists()) {
             const answer = remote.dialog.showMessageBox({
                 title: 'Overwrite',
                 type: 'question',
@@ -103,7 +105,7 @@ setupBtn.addEventListener('click', (e) => {
     }
 });
 
-doneBtn.addEventListener('click', (e) => {
+doneBtn.addEventListener('click', e => {
     const answer = remote.dialog.showMessageBox({
         title: 'Are you sure',
         type: 'question',

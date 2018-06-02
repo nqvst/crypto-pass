@@ -32,7 +32,7 @@ const getStoredPassword = () => {
     return localPass;
 };
 
-const setPassword = (pw) => {
+const setPassword = pw => {
     localPass = sha256(pw);
 };
 
