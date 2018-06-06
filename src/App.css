@@ -1,0 +1,122 @@
+* {
+  font-family: Menlo, monospace;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #222;
+  color: rgb(175, 175, 175);
+  border-top: rgb(194, 9, 201) 8px solid;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+button {
+  height: 32px;
+  border: none;
+}
+
+form {
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+}
+
+.success {
+  background-color: rgb(36, 199, 99);
+  color: #fefefe;
+}
+
+.info {
+  background-color: rgb(36, 166, 199);
+  color: #fefefe;
+}
+
+.primary {
+  background-color: rgb(194, 9, 201);
+  color: #fefefe;
+}
+
+input[type=text],
+input[type=password] {
+  padding: 12px;
+  border: none;
+  background-color: transparent;
+  width: 100%;
+  font-size: 32px;
+  outline: none;
+  outline-color: transparent;
+  border-radius: 0;
+  border-bottom: #444 4px solid;
+  color: #555;
+}
+
+input[type=text]:focus,
+input[type=password]:focus {
+  background-color: transparent;
+  outline: none;
+  outline-color: transparent;
+  color: #fefefe;
+  box-shadow: none;
+  border-bottom: rgb(23, 224, 191) 4px solid;
+
+}
+
+input[type="submit"]:active {
+  outline-color: transparent;
+  outline: none;
+  box-shadow: none;
+}
+
+.validInput {
+  border-right: 4px rgb(20, 189, 91) solid;
+}
+
+.Seed {
+  margin-bottom: 12px;
+  padding: 12px;
+  background-color: #fff3cd;
+  color: #222;
+  border: #ffeeba 1px solid;
+}
+
+.innerProgress {
+  height: 100%;
+  padding: 8px;
+}
+
+.progress {
+  height: 32px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.inlineForm {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.inlineForm button {
+  margin-left: 12px;
+}
+
+.suggestion{
+  position: absolute;
+  top: 24px;
+  font-size: 32px;
+  left: 24px;
+  color: #333;
+  z-index: -1;
+}

@@ -1,28 +1,29 @@
 {
-  "name": "hidden.app",
-  "version": "0.0.1",
-  "description": "genearate pairs of identical data on different machines with no networking",
-  "main": "src/main.js",
+  "name": "hidden-react",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "aes256": "^1.0.3",
+    "classnames": "^2.2.5",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "react-redux": "^5.0.7",
+    "react-scripts": "1.1.4",
+    "redux": "^4.0.0",
+    "sha256": "^0.2.0"
+  },
+  "main": "src/electron-starter.js",
   "scripts": {
-    "start": "electron .",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "electron": "electron .",
     "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --prune=true --out=release-builds",
     "package-win": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=win32 --arch=ia32 --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE",
     "package-linux": "electron-packager . electron-tutorial-app --overwrite --asar=true --platform=linux --arch=x64 --prune=true --out=release-builds"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "aes256": "^1.0.3",
-    "bcrypt": "^2.0.1",
-    "crypto-js": "^3.1.9-1",
-    "node-fs": "^0.1.7",
-    "qrcode": "^1.2.0",
-    "secure-random": "^1.1.1"
-  },
   "devDependencies": {
-    "electron": "^2.0.1",
-    "electron-packager": "^12.1.0",
-    "eslint": "^4.19.1"
+    "electron": "^2.0.2"
   }
 }
