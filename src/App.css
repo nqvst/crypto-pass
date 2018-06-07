@@ -21,9 +21,18 @@ button {
   border: none;
 }
 
+button:hover {
+  opacity: .8;
+}
+
 form {
   padding: 12px;
   margin-bottom: 12px;
+}
+
+textarea {
+  resize: none;
+  width: 100%;
 }
 
 .App {
@@ -31,6 +40,14 @@ form {
   flex-direction: column;
   align-items: center;
   padding: 24px;
+}
+
+.Setup {
+  width: 500px;
+}
+
+.fade {
+  opacity: .8;
 }
 
 .success {
@@ -43,8 +60,18 @@ form {
   color: #fefefe;
 }
 
+.warn {
+  background-color: rgb(238, 211, 58);
+  color: #222;
+}
+
+.error {
+  background-color: rgb(193, 55, 55);
+  color: #fefefe;
+}
+
 .primary {
-  background-color: rgb(194, 9, 201);
+  background-color: rgb(24, 98, 189);
   color: #fefefe;
 }
 
@@ -79,6 +106,14 @@ input[type="submit"]:active {
   box-shadow: none;
 }
 
+input[type="checkbox"] {
+  outline-color: transparent;
+  outline: none;
+  box-shadow: none;
+  width: 16px;
+  height: 16px;
+}
+
 .validInput {
   border-right: 4px rgb(20, 189, 91) solid;
 }
@@ -94,6 +129,9 @@ input[type="submit"]:active {
 .innerProgress {
   height: 100%;
   padding: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .progress {
@@ -117,6 +155,15 @@ input[type="submit"]:active {
   top: 24px;
   font-size: 32px;
   left: 24px;
-  color: #333;
+  color: #444;
   z-index: -1;
+}
+
+.floatingActions {
+  /* position: relative; */
+  position: absolute;
+}
+
+.floatingActions button {
+  margin: 12px;
 }

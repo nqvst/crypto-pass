@@ -4,11 +4,12 @@ import { bindActionCreators } from 'redux';
 import { lock, addDomain, getDomains, useDomain } from '../redux/actions';
 import { getPassword } from '../core/crypto';
 import { updateDomain } from '../core/config';
-
 const { clipboard } = window.require('electron')
 
 const TAB_KEY_CODE = 9;
-const ARROW_RIGHT_KEY_COKDE = 39;
+const ARROW_RIGHT_KEY_CODE = 39;
+const ARROW_UP_KEY_CODE = 38;
+const ARROW_DOWN_KEY_CODE = 40;
 
 class Main extends Component {
 
@@ -35,7 +36,9 @@ class Main extends Component {
                     .toLowerCase()
                     .startsWith(e.target.value.toLowerCase())
         })
-        .sort((a, b) => a.domain.lastUsed > b.domain.lastUsed);
+        .sort((a, b) => b.lastUsed - a.lastUsed);
+
+        console.log(suggestions);
 
         this.setState({
             suggestions,
@@ -50,6 +53,7 @@ class Main extends Component {
         const { domain } = this.state;
         const passwordOut = getPassword(localPassword, domain);
         clipboard.writeText(passwordOut);
+        this.props.addDomain(this.state.domain);
         this.props.useDomain(domain);
     }
 
@@ -69,14 +73,15 @@ class Main extends Component {
     }
 
     cycleSuggestions = (e) => {
-        if (e.keyCode === TAB_KEY_CODE) {
+        console.log('keyPressed:', e.keyCode);
+        if (e.keyCode === ARROW_UP_KEY_CODE || e.keyCode === ARROW_DOWN_KEY_CODE) {
             e.preventDefault();
             this.setState({
-                currentSuggestion: this.state.currentSuggestion + 1
+                currentSuggestion: this.state.currentSuggestion + (e.keyCode === ARROW_UP_KEY_CODE ? 1 : -1)
             });
         }
 
-        if (e.keyCode === ARROW_RIGHT_KEY_COKDE) {
+        if (e.keyCode === TAB_KEY_CODE || e.keyCode === ARROW_RIGHT_KEY_CODE) {
             e.preventDefault();
             if (this.state.suggestions) {
                 console.log(e)
@@ -117,9 +122,6 @@ class Main extends Component {
                         ref="inp"
                     />
                 </form>
-
-                <button onClick={this.saveHandler}>bookmark</button>
-                <button onClick={this.lockHandler}>lock</button>
             </div>
         );
     }

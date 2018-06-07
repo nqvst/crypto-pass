@@ -27,6 +27,7 @@ class Setup extends Component {
             matching: false,
             mouseInput: [],
             seed: '',
+            recoveryMode: false,
         }
     }
 
@@ -79,7 +80,6 @@ class Setup extends Component {
         const seed = setupNewSecretKey({
             password: pw1,
             entropy: sha256(mouseInput.join())
-
         });
 
         this.setState({ seed });
@@ -136,21 +136,41 @@ class Setup extends Component {
         );
     }
 
+    renderRecoveryBox() {
+        return(
+            <textarea cols="31" rows="4"  ref="recoveryText"/>
+        );
+    }
+
+    checkboxHandler = (e) => {
+        if (e.target.checked) {
+            window.removeEventListener('mousemove', this.mouseMoveHandler);
+        } else {
+            window.addEventListener('mousemove', this.mouseMoveHandler);
+        }
+
+        this.setState({recoveryMode: e.target.checked });
+    }
+
     render() {
         const {
             pw1, pw2,
             matching,
             seed,
             mouseInput,
+            recoveryMode,
         } = this.state;
 
         const entropyProgress = Math.min(mouseInput.length / MIN_ENTROPY_VALUE, 1) * 100;
 
         return (
             <div className="Setup">
+                <div>
+                    <input type="checkbox" value="apa" onChange={this.checkboxHandler}/> recover
+                </div>
                 { !seed && this.renderForm(matching) }
-
-                { !seed &&
+                { !seed && recoveryMode && this.renderRecoveryBox() }
+                { !seed && !recoveryMode &&
                     <div className="progress">
                         <div className={classnames('innerProgress', {success: (entropyProgress >= 100), info: (entropyProgress < 100) })} style={{ width: `${entropyProgress}%`, textAlign: 'center' }}>
                             {(entropyProgress >= 100) ? <span style={{ color: '#FFF' }}>Done</span> : <span style={{ color: '#FFF', overflow:'hidden' }}>{sha256(mouseInput.join())}</span> }
@@ -163,6 +183,7 @@ class Setup extends Component {
                 <div>
                     { this.renderButton(!!seed) }
                 </div>
+
             </div>
         );
     }
