@@ -12,12 +12,15 @@ body {
     height: 100vh;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 .hidden {
     display: none;
 }
 
 .alert {
-
     opacity: 1;
 }
 

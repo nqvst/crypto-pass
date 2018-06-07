@@ -1,0 +1,233 @@
+* {
+  font-family: Menlo, monospace;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #222;
+  color: rgb(175, 175, 175);
+  border-top: rgb(194, 9, 201) 8px solid;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+button {
+  height: 32px;
+  border: none;
+}
+
+button:hover {
+  opacity: .8;
+}
+
+form {
+  padding: 12px 0;
+  margin-bottom: 12px;
+}
+
+textarea {
+  box-sizing: border-box;
+  resize: none;
+  width: 100%;
+  font-size: 18px;
+  padding: 20px;
+  line-height: 1.5;
+  background-color: transparent;
+  border: transparent;
+  border-left: 4px transparent solid;
+  /* border-bottom: 4px #333 solid; */
+  outline: none;
+  color: #fefefe;
+}
+
+textarea:focus {
+  border-left: rgb(87, 145, 139) 4px solid;
+}
+
+input[type=text],
+input[type=password] {
+  padding: 12px;
+  border: none;
+  background-color: transparent;
+
+  width: 100%;
+  font-size: 32px;
+  outline: none;
+  outline-color: transparent;
+  border-radius: 0;
+  border-left: 4px transparent solid;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+input[type=text]:focus,
+input[type=password]:focus {
+  /* background-color: transparent; */
+  outline: none;
+  outline-color: transparent;
+  color: #fefefe;
+  box-shadow: none;
+  border-left: rgb(87, 145, 139) 4px solid;
+
+}
+
+input[type="submit"]:active {
+  outline-color: transparent;
+  outline: none;
+  box-shadow: none;
+}
+
+input[type="checkbox"] {
+  outline-color: transparent;
+  outline: none;
+  box-shadow: none;
+  width: 16px;
+  height: 16px;
+  margin-bottom: 12px;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+}
+
+.Setup {
+  width: 500px;
+}
+
+.fade {
+  opacity: .8;
+}
+
+.success {
+  background-color: rgb(36, 199, 99);
+  color: #fefefe;
+}
+
+.info {
+  background-color: rgb(36, 166, 199);
+  color: #fefefe;
+}
+
+.warn {
+  background-color: rgb(238, 211, 58);
+  color: #222;
+}
+
+.error {
+  background-color: rgb(193, 55, 55);
+  color: #fefefe;
+}
+
+.primary {
+  background-color: rgb(24, 98, 189);
+  color: #fefefe;
+}
+
+.validInput {
+  border-right: 4px rgb(20, 189, 91) solid;
+}
+
+.Seed {
+  margin-bottom: 12px;
+  padding: 12px;
+  background-color: #fff3cd;
+  color: #222;
+  border: #ffeeba 1px solid;
+}
+
+.innerProgress {
+  height: 100%;
+  padding: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.progress {
+  height: 32px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.inlineForm {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.inlineForm button {
+  margin-left: 12px;
+}
+
+.suggestion {
+  position: absolute;
+  top: 24px;
+  font-size: 32px;
+  left: 16px;
+  color: #444;
+  z-index: -1;
+}
+
+.secondarySuggestion, .suggestionsAbove {
+  position: absolute;
+  left:24px;
+  overflow: hidden;
+  height: 200px;
+}
+
+.secondarySuggestion {
+  top: 65px;
+}
+
+.suggestionsAbove {
+  top: -200px;
+}
+
+.suggestionsAbove ul {
+  bottom: 0;
+}
+
+.suggestionsAbove .overlay {
+  transform: scaleY(-1);
+  top: 0;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  background: linear-gradient(rgba(34, 34, 34, 0), #222);
+  height: 50%;
+  width: 100%;
+}
+
+.secondarySuggestion ul {
+  list-style: none;
+  padding-left: 0;
+  font-size: 24px;
+  color: #444;
+}
+
+
+.floatingActions {
+  /* position: relative; */
+  position: absolute;
+}
+
+.floatingActions button {
+  margin: 12px;
+}
+
+.hints ul {
+  padding-left: 16px;
+}
+.hints li {
+  margin-bottom: 12px;
+}
