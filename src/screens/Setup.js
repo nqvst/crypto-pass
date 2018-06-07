@@ -28,6 +28,7 @@ class Setup extends Component {
             mouseInput: [],
             seed: '',
             recoveryMode: false,
+            recoverySeed: [],
 
         }
     }
@@ -123,7 +124,7 @@ class Setup extends Component {
 
     renderForm(matching) {
         return (
-            <form className={classnames({ validInput: matching })}>
+            <form >
                 <div>
                     <input
                         autoFocus
@@ -143,6 +144,35 @@ class Setup extends Component {
         );
     }
 
+    getSetupHint() {
+        const { recoverySeed, recoveryMode, mouseInput, pw1, pw2 } = this.state;
+        const passwordsMatch = pw1 === pw2;
+        const needsMoreMouseInput = mouseInput.length < MIN_ENTROPY_VALUE && !recoveryMode;
+        const missingRecoverySeed = recoveryMode && (!recoverySeed || !recoverySeed.length);
+
+        const readyForSetup = passwordsMatch && !needsMoreMouseInput && !missingRecoverySeed;
+
+        if (readyForSetup) {
+            return null;
+        }
+
+        const causes = {
+            entropy: 'Move your mouse around to generate more randomness',
+            nomatch: 'passwords doesn\'t match',
+            seed: 'You have selected recoverymode but havent provided a recovery seed. Either deselect recovery mode or enter your recovery seed.'
+        };
+
+        return (
+            <div className="warn hints" style={{padding: '12px', marginBottom: '12px'}}>
+                <ul>
+                    {!passwordsMatch && <li>{causes.nomatch}</li>}
+                    {missingRecoverySeed && <li>{causes.seed}</li>}
+                    {needsMoreMouseInput && <li>{causes.entropy}</li>}
+                </ul>
+            </div>
+        );
+    }
+
     renderButton(hasSeed) {
         return (
             hasSeed ?
@@ -151,7 +181,7 @@ class Setup extends Component {
                 </button>
                 :
                 <button className="success" onClick={this.setupHandler}>
-                    Setup secret key
+                    Setup private key
                 </button>
         );
     }
@@ -208,6 +238,7 @@ class Setup extends Component {
                 }
                 { seed && <Seed seedString={seed} /> }
 
+                { this.getSetupHint() }
                 <div>
                     { this.renderButton(!!seed) }
                 </div>

@@ -215,9 +215,6 @@ input[type="checkbox"] {
   color: #444;
 }
 
-.suggestionsAbove {
-
-}
 
 .floatingActions {
   /* position: relative; */
@@ -226,4 +223,11 @@ input[type="checkbox"] {
 
 .floatingActions button {
   margin: 12px;
+}
+
+.hints ul {
+  padding-left: 16px;
+}
+.hints li {
+  margin-bottom: 12px;
 }
