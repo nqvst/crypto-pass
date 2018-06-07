@@ -26,13 +26,69 @@ button:hover {
 }
 
 form {
-  padding: 12px;
+  padding: 12px 0;
   margin-bottom: 12px;
 }
 
 textarea {
+  box-sizing: border-box;
   resize: none;
   width: 100%;
+  font-size: 18px;
+  padding: 20px;
+  line-height: 1.5;
+  background-color: transparent;
+  border: transparent;
+  border-left: 4px transparent solid;
+  /* border-bottom: 4px #333 solid; */
+  outline: none;
+  color: #fefefe;
+}
+
+textarea:focus {
+  border-left: rgb(87, 145, 139) 4px solid;
+}
+
+input[type=text],
+input[type=password] {
+  padding: 12px;
+  border: none;
+  background-color: transparent;
+
+  width: 100%;
+  font-size: 32px;
+  outline: none;
+  outline-color: transparent;
+  border-radius: 0;
+  border-left: 4px transparent solid;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+input[type=text]:focus,
+input[type=password]:focus {
+  /* background-color: transparent; */
+  outline: none;
+  outline-color: transparent;
+  color: #fefefe;
+  box-shadow: none;
+  border-left: rgb(87, 145, 139) 4px solid;
+
+}
+
+input[type="submit"]:active {
+  outline-color: transparent;
+  outline: none;
+  box-shadow: none;
+}
+
+input[type="checkbox"] {
+  outline-color: transparent;
+  outline: none;
+  box-shadow: none;
+  width: 16px;
+  height: 16px;
+  margin-bottom: 12px;
 }
 
 .App {
@@ -75,45 +131,6 @@ textarea {
   color: #fefefe;
 }
 
-input[type=text],
-input[type=password] {
-  padding: 12px;
-  border: none;
-  background-color: transparent;
-  width: 100%;
-  font-size: 32px;
-  outline: none;
-  outline-color: transparent;
-  border-radius: 0;
-  border-bottom: #444 4px solid;
-  color: #555;
-}
-
-input[type=text]:focus,
-input[type=password]:focus {
-  background-color: transparent;
-  outline: none;
-  outline-color: transparent;
-  color: #fefefe;
-  box-shadow: none;
-  border-bottom: rgb(23, 224, 191) 4px solid;
-
-}
-
-input[type="submit"]:active {
-  outline-color: transparent;
-  outline: none;
-  box-shadow: none;
-}
-
-input[type="checkbox"] {
-  outline-color: transparent;
-  outline: none;
-  box-shadow: none;
-  width: 16px;
-  height: 16px;
-}
-
 .validInput {
   border-right: 4px rgb(20, 189, 91) solid;
 }
@@ -150,13 +167,56 @@ input[type="checkbox"] {
   margin-left: 12px;
 }
 
-.suggestion{
+.suggestion {
   position: absolute;
   top: 24px;
   font-size: 32px;
-  left: 24px;
+  left: 16px;
   color: #444;
   z-index: -1;
+}
+
+.secondarySuggestion, .suggestionsAbove {
+  position: absolute;
+  left:24px;
+  overflow: hidden;
+  height: 200px;
+}
+
+.secondarySuggestion {
+  top: 65px;
+}
+
+.suggestionsAbove {
+  top: -200px;
+}
+
+.suggestionsAbove ul {
+  bottom: 0;
+}
+
+.suggestionsAbove .overlay {
+  transform: scaleY(-1);
+  top: 0;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  background: linear-gradient(rgba(34, 34, 34, 0), #222);
+  height: 50%;
+  width: 100%;
+}
+
+.secondarySuggestion ul {
+  list-style: none;
+  padding-left: 0;
+  font-size: 24px;
+  color: #444;
+}
+
+.suggestionsAbove {
+
 }
 
 .floatingActions {

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { lock, addDomain, getDomains, useDomain } from '../redux/actions';
+import classnames from 'classnames';
 import { getPassword } from '../core/crypto';
-import { updateDomain } from '../core/config';
-const { clipboard } = window.require('electron')
+import { lock, addDomain, getDomains, useDomain } from '../redux/actions';
+const { clipboard } = window.require('electron');
 
 const TAB_KEY_CODE = 9;
 const ARROW_RIGHT_KEY_CODE = 39;
@@ -55,6 +55,13 @@ class Main extends Component {
         clipboard.writeText(passwordOut);
         this.props.addDomain(this.state.domain);
         this.props.useDomain(domain);
+        this.refs.inp.value = ''
+        this.setState({
+            domain: '',
+            suggestions: [],
+            currentSuggestion: 0,
+        });
+
     }
 
     lockHandler = (e) => {
@@ -77,7 +84,7 @@ class Main extends Component {
         if (e.keyCode === ARROW_UP_KEY_CODE || e.keyCode === ARROW_DOWN_KEY_CODE) {
             e.preventDefault();
             this.setState({
-                currentSuggestion: this.state.currentSuggestion + (e.keyCode === ARROW_UP_KEY_CODE ? 1 : -1)
+                currentSuggestion: this.state.currentSuggestion + (e.keyCode === ARROW_UP_KEY_CODE ? -1 : 1)
             });
         }
 
@@ -93,6 +100,22 @@ class Main extends Component {
         }
     }
 
+    renderSecondarySuggestion(suggestions, above) {
+        return (
+            <div className={classnames('secondarySuggestion', { suggestionsAbove: above })}>
+            <ul>
+            {
+                suggestions.map((s, i) => {
+                    return (i !== 0 && <li key={`suggestion-${i}`}>{s.domain}</li>);
+                })
+            }
+            </ul>
+            <div className="overlay"></div>
+        </div>
+        );
+
+    }
+
     resetCurrentSuggestion = () => {
         this.setState({ currentSuggestion: 0 });
     }
@@ -105,14 +128,20 @@ class Main extends Component {
 
     render() {
         const { currentSuggestion, suggestions } = this.state;
-        const sugg = this.getSuggestion(currentSuggestion, suggestions);
+        const suggestion = this.getSuggestion(currentSuggestion, suggestions);
 
         return (
             <div className="App">
                 <form onSubmit={this.submitHandler} style={{ position: 'relative' }}>
                     <div className="suggestion">
-                        {sugg && sugg.domain}
+                        {suggestion && suggestion.domain}
                     </div>
+
+                    { suggestions && suggestions.length > 0 &&
+                        this.renderSecondarySuggestion(
+                            suggestions.slice(currentSuggestion % suggestions.length))
+                    }
+
                     <input
                         autoFocus
                         type="text"

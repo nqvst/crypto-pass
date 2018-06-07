@@ -7,7 +7,7 @@ const WORD_LIST_LENGTH = words.length;
 
 // this is pretty cool: parseInt(Buffer.from('password').toString('hex'), 16) % 654321;
 
-export function createSeed(entropy = '') {
+export function createSeed(entropy = []) {
     let randomWords = [];
 
     while (randomWords.length < 20) {
@@ -42,14 +42,8 @@ export function generatePassword({ privateKey, domain, version = 1 }) {
         domain,
         version
     ].join());
-    const hashAsNumber = parseInt(hash, 16);
-    const passwordAsANumber = parseInt(Buffer.from('password').toString('hex'), 16);
-    const pw = hash.split().map((char, index) => {
-        //shorten it somehow??
-        return char;
-    }).join('');
 
-    return pw;
+    return hash.substr(0, 32); // truncation is safe???
 }
 
 export function getPassword(password, domain, version = 1) {

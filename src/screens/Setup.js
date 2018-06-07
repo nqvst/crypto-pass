@@ -28,6 +28,7 @@ class Setup extends Component {
             mouseInput: [],
             seed: '',
             recoveryMode: false,
+
         }
     }
 
@@ -42,6 +43,12 @@ class Setup extends Component {
         console.log(e);
         this.setState({
             pw2: e.target.value
+        });
+    }
+
+    handleRecoveryInput = (e) => {
+        this.setState({
+            recoverySeed: e.target.value,
         });
     }
 
@@ -73,23 +80,36 @@ class Setup extends Component {
     }
 
     setupHandler = (e) => {
-        const { pw1, pw2, mouseInput } = this.state;
         e.preventDefault();
+
+        const { pw1, pw2, mouseInput, recoverySeed } = this.state;
+
+        if (pw1 !== pw2) {
+            return;
+        }
+
         console.log(e);
 
-        const seed = setupNewSecretKey({
-            password: pw1,
-            entropy: sha256(mouseInput.join())
-        });
+        let seed;
+        if (recoverySeed && recoverySeed.length) {
+            seed = setupNewSecretKey({
+                password: pw1,
+                recoverySeed,
+            });
+        } else {
+            seed = setupNewSecretKey({
+                password: pw1,
+                entropy: mouseInput.join(),
+            });
+        }
 
         this.setState({ seed });
         window.removeEventListener('mousemove', this.mouseMoveHandler);
-
     }
 
     doneHandler = (e) => {
-        const { done } = this.props;
         e.preventDefault()
+        const { done } = this.props;
         done(this.state.seed);
     }
 
@@ -138,7 +158,13 @@ class Setup extends Component {
 
     renderRecoveryBox() {
         return(
-            <textarea cols="31" rows="4"  ref="recoveryText"/>
+            <textarea
+                onInput={this.handleRecoveryInput}
+                cols="31"
+                rows="4"
+                ref="recoveryText"
+                placeholder="Enter your 20 word recovery seed..."
+            />
         );
     }
 
@@ -149,12 +175,13 @@ class Setup extends Component {
             window.addEventListener('mousemove', this.mouseMoveHandler);
         }
 
-        this.setState({recoveryMode: e.target.checked });
+        this.setState({
+            recoveryMode: e.target.checked,
+        });
     }
 
     render() {
         const {
-            pw1, pw2,
             matching,
             seed,
             mouseInput,
@@ -165,11 +192,13 @@ class Setup extends Component {
 
         return (
             <div className="Setup">
-                <div>
-                    <input type="checkbox" value="apa" onChange={this.checkboxHandler}/> recover
-                </div>
-                { !seed && this.renderForm(matching) }
+                { !seed &&
+                    <div>
+                        <input type="checkbox" value="apa" onChange={this.checkboxHandler}/> recover
+                    </div>
+                }
                 { !seed && recoveryMode && this.renderRecoveryBox() }
+                { !seed && this.renderForm(matching) }
                 { !seed && !recoveryMode &&
                     <div className="progress">
                         <div className={classnames('innerProgress', {success: (entropyProgress >= 100), info: (entropyProgress < 100) })} style={{ width: `${entropyProgress}%`, textAlign: 'center' }}>
@@ -177,7 +206,6 @@ class Setup extends Component {
                         </div>
                     </div>
                 }
-
                 { seed && <Seed seedString={seed} /> }
 
                 <div>
