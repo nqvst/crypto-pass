@@ -1,69 +1,71 @@
 body {
-    font-family: Menlo, monospace;
-    background-color: #222;
-    color: rgb(175, 175, 175);
-    border-top: rgb(194, 9, 201) 8px solid;
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 100vh;
+  font-family: Menlo, monospace;
+  background-color: #222;
+  color: rgb(175, 175, 175);
+  border-top: rgb(194, 9, 201) 8px solid;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
 }
 
 .hidden {
-    display: none;
+  display: none;
 }
 
 .alert {
-
-    opacity: 1;
+  opacity: 1;
 }
 
-input[type=text],
-input[type=password] {
-    border: none;
-    background-color: transparent;
-    width: 100%;
-    font-size: 32px;
-    outline: none;
-    outline-color: transparent;
-    border-radius: 0;
+input[type="text"],
+input[type="password"] {
+  border: none;
+  background-color: transparent;
+  width: 100%;
+  font-size: 32px;
+  outline: none;
+  outline-color: transparent;
+  border-radius: 0;
 }
 
-input[type=text]:focus,
-input[type=password]:focus {
-    background-color: transparent;
-    outline: none;
-    outline-color: transparent;
-    color: #fefefe;
-    box-shadow: none;
+input[type="text"]:focus,
+input[type="password"]:focus {
+  background-color: transparent;
+  outline: none;
+  outline-color: transparent;
+  color: #fefefe;
+  box-shadow: none;
 }
 
 .floating {
-    position: absolute;
-    /* top: 14px; */
-    font-size: 20px;
-    padding: 16px;
-    left: 50%;
-    transform: translateX(-50%);
-    opacity: .8;
+  position: absolute;
+  /* top: 14px; */
+  font-size: 20px;
+  padding: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0.8;
 }
 
 .fadeOut {
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s 1s, opacity 1s linear;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 1s, opacity 1s linear;
 }
 
 .lock-status {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 16px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 16px;
 }
 
 .lock-status.lock {
-    cursor: pointer;
+  cursor: pointer;
+}
+
+#seed {
 }
