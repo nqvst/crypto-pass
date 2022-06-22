@@ -1,3 +1,7 @@
+# DO NOT USE THIS THING. it is an old hackday project that has alot of security flaws
+keeping it for good memories.
+
+
 `nvm use 10 && npm i && npm start`
 
 # Todo
