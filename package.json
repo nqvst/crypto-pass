@@ -20,7 +20,7 @@
     "secure-random": "^1.1.2"
   },
   "devDependencies": {
-    "electron": "^12.0.1",
+    "electron": "^18.3.7",
     "electron-packager": "^15.2.0",
     "eslint": "^4.19.1"
   }
